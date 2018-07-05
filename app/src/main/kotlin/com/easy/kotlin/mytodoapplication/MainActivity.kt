@@ -2,16 +2,17 @@ package com.easy.kotlin.mytodoapplication
 
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
-import android.support.transition.Visibility
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View.GONE
+import android.view.View.VISIBLE
 import com.banbury.notewithkotlin.R
 
 class MainActivity : AppCompatActivity() {
+
+    var fab: FloatingActionButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,19 +21,39 @@ class MainActivity : AppCompatActivity() {
         toolbar.setBackgroundColor(resources.getColor(R.color.colorPrimaryDark))
         setSupportActionBar(toolbar)
 
-        val fab = findViewById(R.id.fab) as FloatingActionButton
-        fab.setOnClickListener { view ->
-            //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show()
+        fab = findViewById(R.id.fab) as FloatingActionButton
+        fab?.setOnClickListener {
             val todoEditFragment = TodoEditFragment()
             supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.content_main, todoEditFragment, todoEditFragment.javaClass.getSimpleName())
-                    .addToBackStack(todoEditFragment.javaClass.getSimpleName())
+                    .replace(R.id.content_main, todoEditFragment, todoEditFragment.javaClass.simpleName)
+                    .addToBackStack(todoEditFragment.javaClass.simpleName)
                     .commit()
-//            hideFab();
-            fab.visibility = GONE
+            hideFab()
         }
+
+        val todosFragment = TodosFragment.getInstance()
+
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.content_main, todosFragment, todosFragment::class.java.simpleName)
+                .commit()
+
+        supportFragmentManager.addOnBackStackChangedListener {
+            val backStackEntryCount = supportFragmentManager.backStackEntryCount
+            if (backStackEntryCount == 0) {
+                showFab()
+            }
+        }
+
+    }
+
+    fun hideFab() {
+        fab?.visibility = GONE
+    }
+
+    fun showFab() {
+        fab?.visibility = VISIBLE
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

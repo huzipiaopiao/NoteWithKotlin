@@ -26,7 +26,7 @@ class TodoEditFragment : Fragment() {
         val TODO_ID_KEY: String = "todo_id_key"
 
         fun newInstance(id: String): TodoEditFragment {
-            var args: Bundle = Bundle()
+            var args = Bundle()
             args.putString(TODO_ID_KEY, id)
             var todoEditFragment: TodoEditFragment = newInstance()
             todoEditFragment.arguments = args
