@@ -19,8 +19,20 @@ android {
         }
     }
 
-    sourceSets{
+    sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    //统一所有依赖中的com.android.support的版本
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            def requested = details.requested
+            if (requested.group == 'com.android.support') {
+                if (!requested.name.startsWith("multidex")) {
+                    details.useVersion '25.3.1'
+                }
+            }
+        }
     }
 }
 
@@ -48,14 +60,16 @@ dependencies {
     compile "org.jetbrains.anko:anko-sdk15:0.8.2"
     compile "org.jetbrains.anko:anko-support-v4:0.8.2"
     compile "org.jetbrains.anko:anko-appcompat-v7:0.8.2"
+
     compile "io.realm:realm-android:0.87.1"
     compile "com.github.thorbenprimke:realm-recyclerview:0.9.12"
-
     kapt "io.realm:realm-annotations:0.87.1"
     kapt "io.realm:realm-annotations-processor:0.87.1"
 
     compile "com.jakewharton:butterknife:8.7.0"
+//    Java 的butterknife注解处理器
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+//    Kotlin 的butterknife注解处理器（Kotlin Annotation processing tool，kapt）
     kapt 'com.jakewharton:butterknife-compiler:8.7.0'
 
     compile "com.jakewharton:butterknife:7.0.1"
