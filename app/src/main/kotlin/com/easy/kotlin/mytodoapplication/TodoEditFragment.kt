@@ -26,17 +26,15 @@ class TodoEditFragment : Fragment() {
         val TODO_ID_KEY: String = "todo_id_key"
 
         fun newInstance(id: String): TodoEditFragment {
-            var args = Bundle()
+            val args = Bundle()
             args.putString(TODO_ID_KEY, id)
-            var todoEditFragment: TodoEditFragment = newInstance()
+            val todoEditFragment: TodoEditFragment = newInstance()
             todoEditFragment.arguments = args
             return todoEditFragment
 
         }
 
-        fun newInstance(): TodoEditFragment {
-            return TodoEditFragment()
-        }
+        fun newInstance(): TodoEditFragment = TodoEditFragment()
     }
 
 
@@ -46,12 +44,12 @@ class TodoEditFragment : Fragment() {
 
             verticalLayout {
                 padding = dip(30)
-                var title = editText {
+                val title = editText {
                     id = R.id.todo_title
                     hintResource = R.string.title_hint
                 }
 
-                var content = editText {
+                val content = editText {
                     id = R.id.todo_content
                     height = 400
                     hintResource = R.string.content_hint
@@ -83,7 +81,7 @@ class TodoEditFragment : Fragment() {
             val todoContent = find<EditText>(R.id.todo_content)
             todoContent.setText(todo?.content)
 
-            var add = find<Button>(R.id.todo_add)
+            val add = find<Button>(R.id.todo_add)
             add.setText(R.string.save)
         }
     }
@@ -96,7 +94,7 @@ class TodoEditFragment : Fragment() {
 
     private fun createTodoFrom(title: EditText, content: EditText) {
         realm.beginTransaction()
-        var t = todo ?: realm.createObject(Todo::class.java)
+        val t = todo ?: realm.createObject(Todo::class.java)
         t.id = todo?.id ?: UUID.randomUUID().toString()
         t.title = title.text.toString()
         t.content = content.text.toString()
